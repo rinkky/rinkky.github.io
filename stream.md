@@ -1,0 +1,146 @@
+# stream(流)的概念和基本操作
+## stream概念
+#### stream(流)
+stream(流)概念源于pipe(管道). UNIX中管道是一条不间断的字节流, 用来实现程序或进程间的通信, 读写外围设备和外部文件等.
+
+流分为字节流(byte)和字符流(char).
+
+#### Input/Output Stream(输入/输出流)
+输入和输出的概念是以程序本身为视角的.
+
+输入是数据从外部进入程序, 输入源是键盘/文件等, 目的地是程序本身. 如从文件中读取数据.
+
+相反, 输出是数据从程序出去到达外部, 输出源即程序本身,目的地是屏幕/文件等. 如写入数据到文件/输出文本到屏幕.
+
+下面以Java为例, 理解程序中的stream概念和大致实现. 其他语言大同小异.
+
+## Java中的stream
+#### 1. 字节流
+
+Java中所有字节流继承自`java.io.InputStream`和`java.io.OutputStream`.
+
+##### InputStream类的主要成员
+
+常用:
+
+>`int read()` 从当前流中读取下一个字节(只有该方法为抽象方法, 因为针对不同输入源, 读取的方式不一样)
+
+>`int read(byte[] b)` 将b.length长度的数据读入b中, 返回读取的长度. 读不到则返回-1
+
+>`int read(byte[] b, int off, int len)` 同上, 规定了了offset和len
+
+>`void close()` 关闭输入流, 并释放与其相关的系统资源
+
+
+其他:
+>`int available()` 当前输入流中可读取的字节数
+
+>`void mark(int readlimit)` 在流中标记当前位置
+
+>`void reset()` 将该输入流重定位到上次mark的位置
+
+>`boolean markSupported()` 测试该输入流是否支持mark和reset
+
+>`long skip(long n)` 从当前流中跳过并丢弃n字节的数据
+
+例, 使用FileInputStream从文件输入
+```Java
+import java.io.FileInputStream;
+//...
+	FileInputStream fiStream = new FileInputStream(fileName);
+	byte[] b = new byte[256];		
+	int size = fiStream.read(b); //从输入流中读取byte[]
+	while(size != -1) {
+		String strInput = new String(b, 0, size); //转化成字符串
+		System.out.println(strInput); 
+		size = fiStream.read(b);
+	}
+	fiStream.close(); //关闭stream
+```
+
+##### OutputStream类的主要成员
+
+>`void write(int b)` 输出1字节. 输出b的8 low-order bits. b的24 high-order bits被忽略. 若b为 `00000000 01010101 0101010101 00000001`, 则输出`00000001`
+
+>`void write(byte[] b)` 输出b的所有字节. 该方法为抽象方法.
+
+>`void write(byte[] b, int off, int len)` 同上, 指定offset和length
+
+>`void flush()` 把缓存区的内容强制输出. 通过write()方法输出内容时, 内容并未直接输出到目的地, 而是暂存在缓存区, 默认情况下缓存区满了之后才会输出一次. 通过flush()可以在未满的情况下强制输出
+
+>`void close()` 关闭输出流
+
+例, 使用FileOutputStream将内容输出到文件中
+```Java
+import java.io.FileOutputStream;
+//...
+	FileOutputStream foStream = new FileOutputStream(fileName, true);
+	String strOutput = "\n----\noutput test";
+	foStream.write(strOutput.getBytes()); //写入输出流
+	foStream.flush(); //强制输出
+	foStream.close(); //关闭stream
+```
+例, PrintStream的模拟实现(System.out是java.io.PrintStream类型)
+```Java
+Public class PrintStream extends OutputStream {
+    OutputStream os;
+    //...
+    public void print(String s) {
+        byte[] b = s.getBytes();
+        os.write(b); //写入到输出流
+        os.flush();  //强制输出
+    }
+}
+``` 
+
+#### 2.字符流
+
+Java的字符输入流继承自`java.io.Reader`, 字符输出流继承自`java.io.Writer`. 这两个类都是抽象类.
+
+##### Reader类的主要成员
+>`int read()` 读取单一字符, 抽象方法
+
+>`int read(char[] cbuf)` 将字符读入字符数组cbuf中
+
+>`int read(char[] cbuf, int off, int len)` 同上, 设定offset和length
+
+>`boolean ready()` 此流是否已准备好可以read
+
+其他类似`InputStream`
+
+例, 通过FileReader读取文本文件
+```Java
+import java.io.FileReader;
+//...
+    FileReader fr = new FileReader(fileName);
+	char[] cbuf = new char[256]; 
+	int size = fr.read(cbuf);
+	while(size != -1) {
+		System.out.print(cbuf);
+		size = fr.read(cbuf);
+	}
+	fr.close();
+```
+
+##### Writer类的主要成员
+>`void write(char[] cbuf)` 写入一个字符数组
+
+>`void write(char[] cbuf, int off, int len)` 写入字符数组的一部分
+
+>`void write(int c)` 写入一个字符
+
+>`void write(String str)` 写入一个字符串
+
+>`void write(String str, int off, int len)` 写入字符串的一部分
+
+其他类似`OutputStream`
+
+例, 通过FileWriter写入文本文件
+```Java
+import java.io.FileWriter;
+//...
+	FileWriter fw = new FileWriter(fileName, false);
+	fw.write("FileWriter Test\n");
+	fw.flush();
+	fw.close();
+```
