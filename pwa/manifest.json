@@ -1,0 +1,10 @@
+{
+  "name": "Rinkky",
+  "short_name": "Rinkky",
+  "description": "Rinkky",
+  "background_color": "#fff",
+  "theme_color": "#000",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}
