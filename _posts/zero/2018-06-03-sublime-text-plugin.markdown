@@ -1,8 +1,8 @@
 ---
-category: 从0到1
+category: from 0 to 1
 tags: sublime-text-plugin python
+title: Sublime Text 3 插件开发从0到1
 ---
-# Sublime Text 3 插件开发从0到1
 
 本文介绍sublime插件开发的最基本知识。
 
