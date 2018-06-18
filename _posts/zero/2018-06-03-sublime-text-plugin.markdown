@@ -1,6 +1,6 @@
 ---
 category: 从0到1
-tags: sublime plugin, python
+tags: sublime-text-plugin python
 ---
 # Sublime Text 3 插件开发从0到1
 
