@@ -1,9 +1,8 @@
 ---
 category: note
 tags: stream java
+title: stream(流)的概念和基本操作
 ---
-# stream(流)的概念和基本操作
-## stream概念
 #### stream(流)
 stream(流)概念源于pipe(管道). UNIX中管道是一条不间断的字节流, 用来实现程序或进程间的通信, 读写外围设备和外部文件等.
 
@@ -18,6 +17,7 @@ stream(流)概念源于pipe(管道). UNIX中管道是一条不间断的字节流
 
 下面以Java为例, 理解程序中的stream概念和大致实现. 其他语言大同小异.
 
+-----
 ## Java中的stream
 #### 1. 字节流
 
@@ -48,7 +48,7 @@ Java中所有字节流继承自`java.io.InputStream`和`java.io.OutputStream`.
 >`long skip(long n)` 从当前流中跳过并丢弃n字节的数据
 
 例, 使用FileInputStream从文件输入
-```Java
+{% highlight java %}
 import java.io.FileInputStream;
 //...
 	FileInputStream fiStream = new FileInputStream(fileName);
@@ -60,7 +60,7 @@ import java.io.FileInputStream;
 		size = fiStream.read(b);
 	}
 	fiStream.close(); //关闭stream
-```
+{% endhighlight %}
 
 ##### OutputStream类的主要成员
 
@@ -75,7 +75,7 @@ import java.io.FileInputStream;
 >`void close()` 关闭输出流
 
 例, 使用FileOutputStream将内容输出到文件中
-```Java
+{% highlight java %}
 import java.io.FileOutputStream;
 //...
 	FileOutputStream foStream = new FileOutputStream(fileName, true);
@@ -83,9 +83,9 @@ import java.io.FileOutputStream;
 	foStream.write(strOutput.getBytes()); //写入输出流
 	foStream.flush(); //强制输出
 	foStream.close(); //关闭stream
-```
+{% endhighlight java %}
 例, PrintStream的模拟实现(System.out是java.io.PrintStream类型)
-```Java
+{% highlight java %}
 Public class PrintStream extends OutputStream {
     OutputStream os;
     //...
@@ -95,7 +95,7 @@ Public class PrintStream extends OutputStream {
         os.flush();  //强制输出
     }
 }
-``` 
+{% endhighlight %}
 
 #### 2.字符流
 
@@ -113,7 +113,7 @@ Java的字符输入流继承自`java.io.Reader`, 字符输出流继承自`java.i
 其他类似`InputStream`
 
 例, 通过FileReader读取文本文件
-```Java
+{% highlight java %}
 import java.io.FileReader;
 //...
     FileReader fr = new FileReader(fileName);
@@ -124,7 +124,7 @@ import java.io.FileReader;
 		size = fr.read(cbuf);
 	}
 	fr.close();
-```
+{% endhighlight %}
 
 ##### Writer类的主要成员
 >`void write(char[] cbuf)` 写入一个字符数组
@@ -140,11 +140,11 @@ import java.io.FileReader;
 其他类似`OutputStream`
 
 例, 通过FileWriter写入文本文件
-```Java
+{% highlight java %}
 import java.io.FileWriter;
 //...
 	FileWriter fw = new FileWriter(fileName, false);
 	fw.write("FileWriter Test\n");
 	fw.flush();
 	fw.close();
-```
+{% endhighlight %}
