@@ -1,3 +1,7 @@
+---
+category: note
+tags: stream, java
+---
 # stream(流)的概念和基本操作
 ## stream概念
 #### stream(流)
