@@ -91,9 +91,11 @@ def touch_test():
 
 appium的python客户端的driver中内置了几个方法，可以直接使用：
 
-`scroll(el0, el1)`：快速滑动；通过元素定位滑动的起点和终点。
-`drag_and_drop(el0, el1)`：慢速滑动，通过元素定位滑动的起点和终点。
-`swipe(x, y, time)`：滑动，可设定滑动的时间；通过坐标定位滑动的起点和终点。
+>`scroll(el0, el1)`：快速滑动；通过元素定位滑动的起点和终点。
+>
+>`drag_and_drop(el0, el1)`：慢速滑动，通过元素定位滑动的起点和终点。
+>
+>`swipe(x, y, time)`：滑动，可设定滑动的时间；通过坐标定位滑动的起点和终点。
 
 例：
 ```Python
